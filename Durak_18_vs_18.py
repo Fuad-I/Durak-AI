@@ -1,4 +1,3 @@
-import numpy as np
 import random
 
 suits = [1, 2, 3, 4]
