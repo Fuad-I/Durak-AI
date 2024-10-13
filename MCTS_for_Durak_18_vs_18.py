@@ -2,7 +2,6 @@ import numpy as np
 import math
 import random
 
-
 class Node:
     def __init__(self, game, args, state, parent=None, action_taken=None):
         self.game = game
