@@ -84,7 +84,7 @@ class MCTS:
         root = Node(self.game, self.args, state)
 
         for search in range(self.args['num_searches']):
-            node = copy.deepcopy(root)
+            node = root
 
             while node.is_fully_expanded():
                 node = node.select()
