@@ -1,4 +1,5 @@
 import random
+import copy
 
 suits = [1, 2, 3, 4]
 ranks = list(range(6, 15))  # 6 to Ace represented by numbers 6-14
@@ -64,33 +65,34 @@ class Durak:
         return False
 
     def get_next_state(self, state, action):
+        new_state = copy.deepcopy(state)
         if action == "end_attack":
-            state['attacker'], state['defender'] = state['defender'], state['attacker']
-            state['current_player'] = self.get_opponent(state['current_player'])
-            state['table'] = []
-            return state
+            new_state['attacker'], new_state['defender'] = new_state['defender'], new_state['attacker']
+            new_state['current_player'] = self.get_opponent(new_state['current_player'])
+            new_state['table'] = []
+            return new_state
         elif action == "take_cards":
             # Defender takes all cards from the table
-            state['player_hands'][state['current_player']].extend(state['table'])
-            state['table'] = []
-            state['current_player'] = self.get_opponent(state['current_player'])
-            return state
+            new_state['player_hands'][new_state['current_player']].extend(new_state['table'])
+            new_state['table'] = []
+            new_state['current_player'] = self.get_opponent(new_state['current_player'])
+            return new_state
         else:
             # Regular card play
-            state['table'].append(action)
-            if action not in state['player_hands'][state['current_player']]:
-                print(state['player_hands'][state['current_player']], state['current_player'], action)
-            state['player_hands'][state['current_player']].remove(action)
-            state['current_player'] = self.get_opponent(state['current_player'])
+            new_state['table'].append(action)
+            new_state['player_hands'][new_state['current_player']].remove(action)
+            new_state['current_player'] = self.get_opponent(new_state['current_player'])
 
-        return state
+        return new_state
 
-    def get_value_and_terminated(self, state):
+    @staticmethod
+    def get_value_and_terminated(state):
         if not state['player_hands'][0] or not state['player_hands'][1]:
             return 1, True
         return 0, False
 
-    def get_opponent(self, player):
+    @staticmethod
+    def get_opponent(player):
         return (player + 1) % 2
 
     def change_perspective(self, state):
