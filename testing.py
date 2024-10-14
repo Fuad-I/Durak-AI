@@ -8,9 +8,8 @@ import time
 
 ARGS = {
     'C': 1.41,
-    'num_searches': 2
+    'num_searches': 10
 }
-
 
 def simulate_ai_vs_random(num_games, args):
     durak = Durak()
@@ -40,17 +39,70 @@ def simulate_ai_vs_random(num_games, args):
             if is_terminal:
                 if player == 0:
                     results['AI Wins'] += 1
+                    print()
                     print('AI Wins')
                 else:
                     results['Random Wins'] += 1
+                    print()
                     print('Random Wins')
                 break
 
             # Switch players
             player = state['current_player']
+    print(results)
 
+def simulate_ai_vs_ai(num_games, n_searches1, n_searches2):
+    durak = Durak()
+    args1 = {
+        'C': 1.41,
+        'num_searches': n_searches1
+    }
+    args2 = {
+        'C': 1.41,
+        'num_searches': n_searches2
+    }
+    mcts10 = MCTS(durak, args1)
+    mcts100 = MCTS(durak, args2)
+
+    results = {'AI10 Wins': 0, 'AI100 Wins': 0}
+
+    for _ in tqdm(range(num_games), desc="Playing Games"):
+        state = durak.get_initial_state()
+        player = state['current_player']
+
+        while True:
+            new_state = copy.deepcopy(state)
+            if player == 0:
+                # AI player
+                action, mcts_probs = mcts10.search(new_state)
+            else:
+                action, mcts_probs = mcts100.search(new_state)
+
+            # Apply the move to the state
+            state = durak.get_next_state(state, action)
+
+            # Check if the game has ended
+            value, is_terminal = durak.get_value_and_terminated(state)
+            if is_terminal:
+                if player == 0:
+                    results['AI1 Wins'] += 1
+                    print()
+                    print('AI1 Wins')
+                else:
+                    results['AI2 Wins'] += 1
+                    print()
+                    print('AI2 Wins')
+                break
+
+            # Switch players
+            player = state['current_player']
+    print(results)
 
 if __name__ == "__main__":
     n_games = int(input('Number of games: '))
-    simulate_ai_vs_random(n_games, ARGS)
+    n_searches1 = int(input('Number of searches AI1: '))
+    n_searches2 = int(input('Number of searches AI2: '))
+    #simulate_ai_vs_random(n_games, ARGS10)
+    simulate_ai_vs_ai(n_games, n_searches1, n_searches2)
+
 
