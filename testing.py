@@ -64,7 +64,7 @@ def simulate_ai_vs_ai(num_games, n_searches1, n_searches2):
     mcts1 = MCTS(durak, args1)
     mcts2 = MCTS(durak, args2)
 
-    results = {'AI10 Wins': 0, 'AI100 Wins': 0}
+    results = {'AI1 Wins': 0, 'AI2 Wins': 0}
 
     for _ in tqdm(range(num_games), desc="Playing Games"):
         state = durak.get_initial_state()
