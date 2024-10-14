@@ -61,8 +61,8 @@ def simulate_ai_vs_ai(num_games, n_searches1, n_searches2):
         'C': 1.41,
         'num_searches': n_searches2
     }
-    mcts10 = MCTS(durak, args1)
-    mcts100 = MCTS(durak, args2)
+    mcts1 = MCTS(durak, args1)
+    mcts2 = MCTS(durak, args2)
 
     results = {'AI10 Wins': 0, 'AI100 Wins': 0}
 
@@ -74,9 +74,9 @@ def simulate_ai_vs_ai(num_games, n_searches1, n_searches2):
             new_state = copy.deepcopy(state)
             if player == 0:
                 # AI player
-                action, mcts_probs = mcts10.search(new_state)
+                action, mcts_probs = mcts1.search(new_state)
             else:
-                action, mcts_probs = mcts100.search(new_state)
+                action, mcts_probs = mcts2.search(new_state)
 
             # Apply the move to the state
             state = durak.get_next_state(state, action)
