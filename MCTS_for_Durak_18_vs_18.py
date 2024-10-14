@@ -1,6 +1,8 @@
+import copy
 import numpy as np
 import math
 import random
+
 
 class Node:
     def __init__(self, game, args, state, parent=None, action_taken=None):
@@ -36,7 +38,6 @@ class Node:
         return q_value + self.args['C'] * math.sqrt(math.log(self.visit_count) / child.visit_count)
 
     def expand(self):
-        # action = self.expandable_moves[random.randint(0, len(self.expandable_moves) - 1)]
         action = random.choice(self.expandable_moves)
         self.expandable_moves.remove(action)
 
@@ -53,7 +54,7 @@ class Node:
         if is_terminal:
             return -value
 
-        rollout_state = self.state.copy()
+        rollout_state = copy.deepcopy(self.state)
         rollout_player = self.state['current_player']
         while True:
             valid_moves = self.game.get_valid_moves(rollout_state)
@@ -80,11 +81,10 @@ class MCTS:
         self.args = args
 
     def search(self, state):
-        temp_state = state.copy()
         root = Node(self.game, self.args, state)
 
         for search in range(self.args['num_searches']):
-            node = root
+            node = copy.deepcopy(root)
 
             while node.is_fully_expanded():
                 node = node.select()
@@ -106,4 +106,3 @@ class MCTS:
             action_probs = {action: count / total_visits for action, count in action_probs.items()}
         best_action = max(action_probs, key=action_probs.get)
         return best_action, action_probs
-
