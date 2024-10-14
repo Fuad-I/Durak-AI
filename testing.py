@@ -1,3 +1,5 @@
+import copy
+
 from Durak_18_vs_18 import Durak
 from MCTS_for_Durak_18_vs_18 import MCTS
 import random
@@ -23,7 +25,7 @@ def simulate_ai_vs_random(num_games, args):
         while True:
             # Get valid moves
             valid_moves = durak.get_valid_moves(state)
-            new_state = state.copy()
+            new_state = copy.deepcopy(state)
             if player == 0:
                 # AI player
                 action, mcts_probs = mcts.search(new_state)
