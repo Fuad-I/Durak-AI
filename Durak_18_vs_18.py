@@ -48,7 +48,7 @@ class Durak:
                 valid_moves = [card for card in state['player_hands'][player] if card[0]
                                in [dcard[0] for dcard in state['table']]] + ['end_attack']
             else:
-                valid_moves = state['player_hands'][player]
+                valid_moves = copy.deepcopy(state['player_hands'][player])
         else:
             if state['table']:
                 valid_moves = [card for card in state['player_hands'][player] if
