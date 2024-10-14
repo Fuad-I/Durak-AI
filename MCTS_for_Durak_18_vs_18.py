@@ -41,7 +41,7 @@ class Node:
         action = random.choice(self.expandable_moves)
         self.expandable_moves.remove(action)
 
-        child_state = self.state.copy()
+        child_state = copy.deepcopy(self.state)
         child_state = self.game.get_next_state(child_state, action)
 
         child = Node(self.game, self.args, child_state, self, action)
@@ -49,7 +49,7 @@ class Node:
         return child
 
     def simulate(self):
-        value, is_terminal = self.game.get_value_and_terminated(self.state)
+        '''value, is_terminal = self.game.get_value_and_terminated(self.state)
 
         if is_terminal:
             return -value
@@ -64,7 +64,8 @@ class Node:
             if is_terminal:
                 if rollout_player == rollout_state['current_player']:
                     return - self.game.get_value_and_terminated(rollout_state)[0]
-                return self.game.get_value_and_terminated(rollout_state)[0]
+                return self.game.get_value_and_terminated(rollout_state)[0]'''
+        return random.choice([1, -1])
 
     def backpropagate(self, value):
         self.value_sum += value
