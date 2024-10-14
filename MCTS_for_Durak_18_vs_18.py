@@ -49,7 +49,7 @@ class Node:
         return child
 
     def simulate(self):
-        '''value, is_terminal = self.game.get_value_and_terminated(self.state)
+        value, is_terminal = self.game.get_value_and_terminated(self.state)
 
         if is_terminal:
             return -value
@@ -64,8 +64,7 @@ class Node:
             if is_terminal:
                 if rollout_player == rollout_state['current_player']:
                     return - self.game.get_value_and_terminated(rollout_state)[0]
-                return self.game.get_value_and_terminated(rollout_state)[0]'''
-        return random.choice([1, -1])
+                return self.game.get_value_and_terminated(rollout_state)[0]
 
     def backpropagate(self, value):
         self.value_sum += value
